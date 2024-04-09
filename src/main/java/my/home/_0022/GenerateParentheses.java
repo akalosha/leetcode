@@ -12,27 +12,23 @@ public class GenerateParentheses {
     }
 
     public static List<String> generateParenthesis(int n) {
-        List<StringBuilder> builders = generate(n, 0, 0, 0, 0, Character.MAX_VALUE);
-        return builders.stream().map(StringBuilder::toString).toList();
+        return generate(n, 0, 0, 0, 0, "");
     }
 
-    private static List<StringBuilder> generate(int n, int openBrackets, int totalOpenBrackets, int closedBrackets, int totalClosedBrackets, char currentChar) {
-        List<StringBuilder> builders = new ArrayList<>();
+    private static List<String> generate(int n, int openBrackets, int totalOpenBrackets, int closedBrackets, int totalClosedBrackets, String currentStr) {
+        List<String> list = new ArrayList<>();
         if (n > totalOpenBrackets) {
-            builders.addAll(generate(n, openBrackets + 1, totalOpenBrackets + 1, closedBrackets, totalClosedBrackets, ')'));
+            list.addAll(generate(n, openBrackets + 1, totalOpenBrackets + 1, closedBrackets, totalClosedBrackets, ")" + currentStr));
         }
         if (n > totalClosedBrackets && openBrackets > closedBrackets) {
-            builders.addAll(generate(n, openBrackets, totalOpenBrackets, closedBrackets + 1, totalClosedBrackets + 1, '('));
+            list.addAll(generate(n, openBrackets, totalOpenBrackets, closedBrackets + 1, totalClosedBrackets + 1, "(" + currentStr));
         }
 
-        if (builders.isEmpty()) {
-            return Collections.singletonList(new StringBuilder().append(currentChar));
+        if (list.isEmpty()) {
+            return Collections.singletonList(currentStr);
 
         } else {
-            if (currentChar != Character.MAX_VALUE) {
-                builders.forEach(builder -> builder.append(currentChar));
-            }
-            return builders;
+            return list;
         }
     }
 }
