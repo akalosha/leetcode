@@ -1,5 +1,9 @@
 package my.home._0023;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class MergeKSortedLists {
 
     public static void main(String[] args) {
@@ -10,28 +14,21 @@ public class MergeKSortedLists {
     }
 
     public static ListNode mergeKLists(ListNode[] lists) {
-        ListNode head = new ListNode(-1);
-        ListNode currentNode = head;
-        int minNodeIndex = -1;
-        boolean shouldContinue = true;
-        while (shouldContinue) {
-            if (minNodeIndex != -1) {
-                currentNode.next = lists[minNodeIndex];
-                currentNode = currentNode.next;
-                lists[minNodeIndex] = lists[minNodeIndex].next;
-            }
-            shouldContinue = false;
-            minNodeIndex = -1;
-            for (int i = 0; i < lists.length; i++) {
-                if (lists[i] == null) {
-                    continue;
-                }
-                if (minNodeIndex == -1 || lists[i].val < lists[minNodeIndex].val) {
-                    minNodeIndex = i;
-                    shouldContinue = true;
-                }
+        List<Integer> numbers = new ArrayList<>();
+        for (ListNode list : lists) {
+            while (list != null) {
+                numbers.add(list.val);
+                list = list.next;
             }
         }
+        Collections.sort(numbers);
+        ListNode head = new ListNode(-1);
+        ListNode current = head;
+        for (Integer number : numbers) {
+            current.next = new ListNode(number);
+            current = current.next;
+        }
+
         return head.next;
     }
 }
